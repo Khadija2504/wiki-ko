@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
-    $user->login($_POST['loginUsername'], $_POST['loginPassword']);
+    $user->login($_POST['loginEmail'], $_POST['loginPassword']);
 }
 ?>
 
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
                 <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
             </div>
             <span>or use your account</span>
-            <input type="text" name="loginUsername" placeholder="Username" required>
+            <input type="email" name="loginEmail" placeholder="Email" required>
 
             <input type="password" name="loginPassword" placeholder="Mot de passe" required>
 

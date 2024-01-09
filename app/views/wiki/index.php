@@ -1,5 +1,6 @@
 <?php
 require "../../models/Wiki.php";
+
 $data = new Wiki();
 $result = $data->wikis();
 ?>
@@ -139,9 +140,7 @@ $result = $data->wikis();
         echo "Aucun wiki trouvé dans la base de données.";
     }
     ?>
-    
 </div>
-
 
 </body>
 </html>
