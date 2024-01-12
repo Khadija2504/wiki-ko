@@ -24,8 +24,6 @@ class User
             $stmt->bindParam(':aboutMe', $aboutMe);
 
             $stmt->execute();
-
-            echo "Inscription réussie !";
             exit();
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
@@ -50,7 +48,7 @@ class User
                     header('Location: ../../views/wiki/dashboard.php');
                     exit();
                 } else {
-                    header('Location: ../../views/board/index.php');
+                    header('Location: ../../views/wiki/home.php');
                     exit();
                 }
             } else {
@@ -74,7 +72,6 @@ class User
         $_SESSION['data']['Email'] = $newEmail;
         $_SESSION['data']['aboutMe'] = $newAboutMe;
 
-        echo "Profile updated successfully!";
     }
     public function logout(){
         if (isset($_POST['logout'])) {

@@ -1,8 +1,14 @@
 <?php
+require "../../../config/database.php";
 require "../../models/Wiki.php";
+require "../../models/Category.php";
 
 $data = new Wiki();
+$database = new Database();
+$cat = new Category();
 $result = $data->wikis();
+$db = $database->connect();
+$category = $cat->category();
 ?>
 
 <!DOCTYPE html>
@@ -63,6 +69,24 @@ $result = $data->wikis();
           font-size: 30px;
           color: aliceblue;
         }
+        .headturbo{
+          background-color: #000;
+          min-height: 500px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+        .premiumBox h1{
+          color: #FF416C;
+        }
+        .premiumBox h3{
+          color: #fff;
+        }
+        .category{
+          background-color: #c8c8c8;
+        }
     </style>
 </head>
 
@@ -105,6 +129,49 @@ $result = $data->wikis();
         </div>
     </nav>
 </header>
+
+<section class="headturbo">
+  <div class="texture-overlay"></div>
+    <div class="premiumBox">
+      <h1><b>Welcome in WIKI-KO!</b></h1>
+      <h3>the best place where you can <br>looking for your favore articals easly..</h3>
+    </div>
+</section>
+<svg preserveAspectRatio="none" version="1.1" width="100%" height="48" viewBox="0 0 1600 48" style="width:100%; float:left; margin-bottom: 40px;"><polygon class="polygon" points="1600,0 0,0 0,48  "></polygon></svg>
+
+<div class="ag-courses_box" style="width: 100%;">
+    <?php
+    if ($category->rowCount()>0){
+        foreach ($category as $category){
+        ?>
+<div class="category ag-courses_item">
+                <a href="#" class="ag-courses-item_link">
+                    <div class="ag-courses-item_bg"></div>
+                    <div class="ag-courses-item_title">
+                        <?php
+                        echo $category["CategoryName"] . "<br>";
+                        ?>
+                    </div>
+                </a>
+            </div>
+        <?php
+        }
+    }
+    ?>
+</div>
+
+
+<div class="container text-center">
+  <div class="row">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-4"></div>
+  </div>
+  <div class="row">
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+  </div>
+</div>
 <div class="ag-courses_box">
     <?php
     if ($result->rowCount() > 0) {
