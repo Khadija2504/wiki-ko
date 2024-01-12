@@ -144,8 +144,8 @@ $category = $cat->category();
     if ($category->rowCount()>0){
         foreach ($category as $category){
         ?>
-<div class="category ag-courses_item">
-                <a href="#" class="ag-courses-item_link">
+              <div class="category ag-courses_item">
+                <a href="show_category_wikis.php?category_id=<?php echo $category['CategoryID']; ?>" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
                     <div class="ag-courses-item_title">
                         <?php

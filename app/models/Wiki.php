@@ -88,6 +88,21 @@ public function deleteWiki($wikiID)
     }
 }
 
+public function getWikisByCategory($categoryID)
+{
+    $data = new Database;
+    $db = $data->connect();
+    $sql = "SELECT wikis.*, users.Username AS AuthorName
+    FROM wikis
+    INNER JOIN users ON wikis.AuthorID = users.UserID
+    WHERE CategoryID = :categoryID";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':categoryID', $categoryID, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt;
+}
+
     public function addTagsToWiki($wikiID, $tagIDs)
 {
     $data = new Database();

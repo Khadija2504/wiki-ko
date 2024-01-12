@@ -52,8 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
     $data->updateWiki($wikiID, $title, $content, $categoryID);
 }
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -265,8 +263,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
         foreach ($category as $category){
         ?>
 
-<div class="ag-courses_item">
-                <a href="#" class="ag-courses-item_link">
+            <div class="ag-courses_item">
+                <a href="show_category_wikis.php?category_id=<?php echo $category['CategoryID']; ?>" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
                     <div class="ag-courses-item_title">
                         <?php

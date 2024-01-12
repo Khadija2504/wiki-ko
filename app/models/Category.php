@@ -8,5 +8,13 @@ class Category{
         return $result;
     }
 
+    public function getCategoryName($categoryID) {
+        $data = new Database();
+        $query = $data->connect()->prepare("SELECT CategoryName FROM categories WHERE CategoryID = ?");
+        $query->execute([$categoryID]);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        return ($result) ? $result['CategoryName'] : null;
+    }
 }
 ?>
