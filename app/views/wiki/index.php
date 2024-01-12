@@ -1,5 +1,7 @@
 <?php
 require "../../../config/database.php";
+
+require "../../controllers/WikiController.php";
 require "../../models/Wiki.php";
 require "../../models/Category.php";
 
@@ -16,7 +18,7 @@ $category = $cat->category();
 
 <head>
     <meta charset="UTF-8">
-    <title>CodePen - Item Card Hover Effect</title>
+    <title>wiki-ko</title>
     <link rel='stylesheet' href='https://rawcdn.githack.com/SochavaAG/example-mycode/master/_common/css/reset.css'>
     <link rel="stylesheet" href="../../../public/css/cards.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -96,13 +98,14 @@ $category = $cat->category();
         <div class="container">
 
             <div class="logo">WIKI-KO</div>
+            <form class="search" method="post" action="search.php" id="form">
             <div class="input-group w-50 ms-md-4 ">
-                <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
+                <input type="search" name="word" id="form1" class="form-control rounded" placeholder="Search"
                        aria-label="Search" aria-describedby="search-addon"/>
-                <button type="button" class="btn btn-outline" data-mdb-ripple-init><i
+                <button name="search" type="button" class="btn btn-outline" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
             </div>
-
+            </form>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -179,7 +182,7 @@ $category = $cat->category();
             ?>
             <div class="ag-courses_item">
 
-                <a href="#" class="ag-courses-item_link">
+            <a href="show.php?wiki_id=<?php echo $row['WikiID']; ?>" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
                     <div class="ag-courses-item_title">

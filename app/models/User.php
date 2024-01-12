@@ -40,24 +40,28 @@ class User
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (count($result) > 0 && password_verify($password, $result['Password'])) {
-                $_SESSION['data'] = $result;
+            if ($result) {
+                if (password_verify($password, $result['Password'])) {
+                    $_SESSION['data'] = $result;
 
-                // Redirection en fonction du rôle
-                if ($_SESSION['data']['Role'] == 'admin') {
-                    header('Location: ../../views/wiki/dashboard.php');
-                    exit();
+                    if ($_SESSION['data']['Role'] == 'admin') {
+                        header('Location: ../../views/wiki/dashboard.php');
+                        exit();
+                    } else {
+                        header('Location: ../../views/wiki/home.php');
+                        exit();
+                    }
                 } else {
-                    header('Location: ../../views/wiki/home.php');
-                    exit();
+                    echo "Nom d'utilisateur ou mot de passe incorrect.";
                 }
             } else {
-                echo "Nom d'utilisateur ou mot de passe incorrect.";
+                echo "Aucun utilisateur trouvé avec cette adresse e-mail.";
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
         }
     }
+
     public function editProfile($newUsername, $newEmail, $newAboutMe, $userID){
         $sql = "UPDATE users SET Username = :newUsername, Email = :newEmail, aboutMe = :newAboutMe WHERE UserID = :userID";
         $stmt = $this->db->prepare($sql);
@@ -67,7 +71,6 @@ class User
         $stmt->bindParam(':userID', $userID);
         $stmt->execute();
 
-        // Update session data with the new information
         $_SESSION['data']['Username'] = $newUsername;
         $_SESSION['data']['Email'] = $newEmail;
         $_SESSION['data']['aboutMe'] = $newAboutMe;

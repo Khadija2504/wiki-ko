@@ -1,24 +1,13 @@
 <?php
-require "../../../config/database.php";
-require "../../models/User.php";
-require "../../models/Wiki.php";
-require "../../models/Category.php";
+require '../../../config/database.php';
+require '../../controllers/WikiController.php';
+require '../../models/Wiki.php';
+session_start();
 
-$user = new User(Database::connect());
+$data = new wikiController();
+$result = $data->search();
 
-$data = new Wiki();
-$cat = new Category();
-$database = new Database();
-$user->logout();
-
-if (isset($_GET['category_id'])) {
-    $categoryID = (int)$_GET['category_id'];
-
-    $categoryName = $cat->getCategoryName($categoryID);
-
-    $catego = $data->getWikisByCategory($categoryID);
-    ?>
-
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -128,14 +117,12 @@ if (isset($_SESSION['data'])){
     <nav class="navbar navbar-expand-lg navbar-scroll  shadow-0 border-bottom ">
         <div class="container">
 
-        <form class="search" method="post" action="search.php" id="form">
             <div class="input-group w-50 ms-md-4 ">
-                <input type="search" name="word" id="form1" class="form-control rounded" placeholder="Search"
+                <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
                        aria-label="Search" aria-describedby="search-addon"/>
-                <button name="search" type="button" class="btn btn-outline" data-mdb-ripple-init><i
+                <button type="button" class="btn btn-outline" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
             </div>
-        </form>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -229,14 +216,12 @@ if (isset($_SESSION['data'])){
         <div class="container">
 
             <div class="logo">WIKI-KO</div>
-            <form class="search" method="post" action="search.php" id="form">
             <div class="input-group w-50 ms-md-4 ">
-                <input type="search" name="word" id="form1" class="form-control rounded" placeholder="Search"
+                <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
                        aria-label="Search" aria-describedby="search-addon"/>
-                <button name="search" type="button" class="btn btn-outline" data-mdb-ripple-init><i
+                <button type="button" class="btn btn-outline" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
             </div>
-            </form>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -267,43 +252,33 @@ if (isset($_SESSION['data'])){
 <?php
 }
 ?>
+<section class="vh-20">
+<div class="container py-5 h-100">
+<div class="row d-flex align-items-center justify-content-center h-100">
+<div class="list" >
 
-<body>
-    <h1>Wikis in <?php echo $categoryName; ?></h1>
-    <div class="ag-courses_box">
-<?php
-if ($catego->rowCount() > 0) {
-    foreach ($catego as $wiki) {
-?>
-        <div class="ag-courses_item">
-            <a href="show.php?wiki_id=<?php echo $wiki['WikiID']; ?>" class="ag-courses-item_link">
-                <div class="ag-courses-item_bg"></div>
-                <div class="ag-courses-item_title">
-                    <?php
-                    echo '<h2>' . $wiki['Title'] . '</h2>';
-                    echo '<p class="">' . substr($wiki['Content'], 0, 40) . '...</p>' . '<br>';
-                    echo '<p>Author: ' . $wiki['AuthorName'] . '</p>';
-                    ?>
-                </div>
-                <div class="ag-courses-item_date-box">
-                    Create at:
-                    <span class="ag-courses-item_date">
-                        <?php echo '<p>Created at: ' . $wiki['CreatedAt'] . '</p>'; ?>
-                    </span>
-                </div>
-            </a>
-        </div>
-<?php
-    }
-} else {
-    echo '<p>No wikis found for this category.</p>';
-}
-?>
-</div>
+		<h3 class="list-title"> les resultat(<?php echo count($result) ?>) </h3>
+		<div class="scroll">
+        <?php
+
+            foreach( $result as $r){
+        ?>
+            <input type="hidden" name="WikiID" value="<?php echo $r['WikiID'] ?>">
+
+                <ul class="list-items">
+                    
+                    <li><?php echo $r['Title'] ?><span><span> : </span><?php echo $r['Content'] ?></span></li>
+
+                </ul>
+                <?php
+            }
+            ?>
+</section>
+
+<style>
+		#form{
+		display:flex;
+	}
+</style>
 </body>
-
 </html>
-
-<?php
-}
-?>

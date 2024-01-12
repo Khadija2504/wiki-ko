@@ -159,12 +159,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
     <nav class="navbar navbar-expand-lg navbar-scroll  shadow-0 border-bottom ">
         <div class="container">
 
+        <form class="search" method="post" action="search.php" id="form">
             <div class="input-group w-50 ms-md-4 ">
-                <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
+                <input type="search" name="word" id="form1" class="form-control rounded" placeholder="Search"
                        aria-label="Search" aria-describedby="search-addon"/>
-                <button type="button" class="btn btn-outline" data-mdb-ripple-init><i
+                <button name="search" type="button" class="btn btn-outline" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
             </div>
+        </form>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -233,11 +235,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
                         <li class="nav-item">
                             <button type="button" class="btn nav-link" href="#" data-toggle="modal" data-target="#prof">
                                 
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" class="btn nav-link" href="#" data-toggle="modal" data-target="#prof">
-                                Add new wikis
                             </button>
                         </li>
                         <li class="nav-item">
@@ -440,16 +437,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
     function deleteWiki(wikiID) {
         if (confirm("Are you sure you want to delete this wiki?")) {
             $.ajax({
-                type: "POST",
-                url: "ho.php",
-                data: { wiki_id: wikiID },
-                success: function (response) {
-                    location.reload();
-                },
-                error: function (error) {
-                    console.error("Error deleting wiki: " + error);
-                }
-            });
+            type: "POST",
+            url: "ho.php",
+            data: { wiki_id: wikiID },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (error) {
+                console.error("Error deleting wiki: " + error);
+            }
+        });
+
         }
     }
 </script>

@@ -2,6 +2,10 @@
 
 class Wiki
 {
+    private $db;
+    public function __construct(){
+        $this->db = Database::getInstance()->getConnection(); 
+    }
     public function wikis()
 {
     $data = new Database();
@@ -113,6 +117,28 @@ public function getWikisByCategory($categoryID)
     }
     return true;
 }
+
+    static public function getsearch($search)
+    {
+
+        $data = new Database;
+        $db = $data->connect()->prepare("SELECT * FROM wikis WHERE Title LIKE :wiki_title;");
+
+        $db->bindParam(':wiki_title', $search['wiki_title']);
+
+        $db->execute();
+        $wikis = $db->fetchAll(PDO::FETCH_ASSOC);
+        $db = NULL;
+
+        return $wikis;
+    }
+    static public function search_wiki($data_search)
+    {
+        $data = new Database;
+        $db = $data->connect()->prepare("SELECT * FROM `wikis` WHERE Title like '%['wiki_title']%';");
+        $db->bindParam(':wiki_title', $data_search['wiki_title']);
+        $db->execute();
+    }
 
 }
 ?>

@@ -1,4 +1,5 @@
 <?php
+// ho.php
 require "../../../config/database.php";
 require "../../models/Wiki.php";
 
