@@ -1,56 +1,60 @@
 <?php
-require "../../../config/database.php";
-require "../../models/User.php";
-require "../../models/Wiki.php";
-require "../../models/Category.php";
-require "../../models/Tag.php";
-if (!isset($_SESSION['data'])) {
-    header('Location: ../../views/auth/sign.php');
-    exit();
-}
-$user = new User(Database::connect());
-$data = new Wiki();
-$database = new Database();
-$cat = new Category();
-$tagModel = new Tag();
-$user->logout();
-$result = $data->wikis();
-$db = $database->connect();
-$categories = $cat->category();
-$userData = $_SESSION['data'];
-$userID = $userData['UserID'];
+// session_start();
 
-$myWiki = $data->mywikis($userID);
+//      var_dump(  $_SESSION['data']);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_username'])) {
-    $newUsername = $_POST['new_username'];
-    $newEmail = $_POST['new_email'];
-    $newAboutMe = $_POST['new_aboutMe'];
+// require "../../../config/database.php";
+// require "../../models/User.php";
+// require "../../models/Wiki.php";
+// require "../../models/Category.php";
+// require "../../models/Tag.php";
+// if (!isset($_SESSION['data'])) {
+//     header('Location: ../../views/auth/sign.php');
+//     exit();
+// }
+// $user = new User(Database::connect());
+// $data = new Wiki();
+// $database = new Database();
+// $cat = new Category();
+// $tagModel = new Tag();
+// $user->logout();
+// $result = $data->wikis();
+// $db = $database->connect();
+// $categories = $cat->category();
+// $userData = $_SESSION['data'];
+// $userID = $userData['UserID'];
 
-    $user->editProfile($newUsername, $newEmail, $newAboutMe, $userID);
-}
-$category = $cat->category();
-$tags = $tagModel->tags();
+// $myWiki = $data->mywikis($userID);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['title'])) {
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $categoryID = $_POST['category'];
-    $selectedTags = isset($_POST['tags']) ? $_POST['tags'] : [];
+// if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_username'])) {
+//     $newUsername = $_POST['new_username'];
+//     $newEmail = $_POST['new_email'];
+//     $newAboutMe = $_POST['new_aboutMe'];
 
-    $wikiID = $data->addWiki($title, $content, $userID, $categoryID);
+//     $user->editProfile($newUsername, $newEmail, $newAboutMe, $userID);
+// }
+// $category = $cat->category();
+// $tags = $tagModel->tags();
 
-    $data->addTagsToWiki($wikiID, $selectedTags);
-}
+// if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['title'])) {
+//     $title = $_POST['title'];
+//     $content = $_POST['content'];
+//     $categoryID = $_POST['category'];
+//     $selectedTags = isset($_POST['tags']) ? $_POST['tags'] : [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
-    $wikiID = $_POST['wiki_id'];
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $categoryID = $_POST['category'];
+//     $wikiID = $data->addWiki($title, $content, $userID, $categoryID);
 
-    $data->updateWiki($wikiID, $title, $content, $categoryID);
-}
+//     $data->addTagsToWiki($wikiID, $selectedTags);
+// }
+
+// if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
+//     $wikiID = $_POST['wiki_id'];
+//     $title = $_POST['title'];
+//     $content = $_POST['content'];
+//     $categoryID = $_POST['category'];
+
+//     $data->updateWiki($wikiID, $title, $content, $categoryID);
+// }
 
 ?>
 
@@ -67,11 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-<!-- Bootstrap JS with Popper.js and jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-/r/x+qnKQXRSwHVb/Q5U7AuQibJtVsdA5T1IK5ntvWtjLYSD+SIcAqpsY5XWfRQ" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-omE8ExHRA5lczMouZXFLhZYwsyowDtd9mZJrbSdQSH+3Vd/kb9LpFq6pfPV8ai5b" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS with Popper.js and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-/r/x+qnKQXRSwHVb/Q5U7AuQibJtVsdA5T1IK5ntvWtjLYSD+SIcAqpsY5XWfRQ" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-omE8ExHRA5lczMouZXFLhZYwsyowDtd9mZJrbSdQSH+3Vd/kb9LpFq6pfPV8ai5b" crossorigin="anonymous"></script>
 
     <style>
         .btn-outline {
@@ -255,22 +259,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
 </header>
 
 <div class="category ag-courses_box" style="width: 100%;">
-    <?php
-    if ($category->rowCount()>0){
-        foreach ($category as $category){
+<?php
+    if (isset($categories) && !empty($categories)) {
+        foreach ($categories as $row){
         ?>
-
-            <div class="ag-courses_item">
-                <a href="show_category_wikis.php?category_id=<?php echo $category['CategoryID']; ?>" class="ag-courses-item_link">
+              <div class="category ag-courses_item">
+                <a href="showcategoryWiki.php?category_id=<?php echo $row->getCategoryID(); ?>" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
                     <div class="ag-courses-item_title">
                         <?php
-                        echo $category["CategoryName"] . "<br>";
+                        echo $row->getCategoryName() . "<br>";
                         ?>
                     </div>
                 </a>
             </div>
-
         <?php
         }
     }
@@ -278,25 +280,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
 </div>
 
 <div class="ag-courses_box">
-    <?php
-    if ($result->rowCount() > 0) {
-        foreach ($result as $row) {
-    ?>
+<?php
+if (isset($wikis) && !empty($wikis)) {
+    foreach ($wikis as $row) {
+        ?>
             <div class="ag-courses_item">
-                <a href="show.php?wiki_id=<?php echo $row['WikiID']; ?>" class="ag-courses-item_link">
+            <a href='showWikiD.php?wiki_id=<?=$row->getIdwiki(); ?>' class='ag-courses-item_link'>
                     <div class="ag-courses-item_bg"></div>
                     <div class="ag-courses-item_title">
                         <?php
-                        echo $row["Title"] . "<br>";
-                        echo '<p class="">' . substr($row["Content"], 0, 40) . '...</p>' . '<br>';
-                        echo "By " . $row["AuthorName"] . "<br>";
-                        echo '<p class="">' . $row["CategoryName"] . '</p>' . "<br>";
+                        echo $row->getTitle() . "<br>";
+                        echo '<p class="">' . substr($row->getcontent(), 0, 40) . '...</p>' . '<br>';
+                        echo "By " . $row->getauthor() . "<br>";
+                        echo '<p class="">' . $row->getcategory() . '</p>' . "<br>";
                         ?>
                     </div>
                     <div class="ag-courses-item_date-box">
                         Create at:
                         <span class="ag-courses-item_date">
-                            <?php echo $row["CreatedAt"] . "<br>"; ?>
+                            <?php echo $row->getdateCreation() . "<br>"; ?>
                         </span>
                     </div>
                 </a>
@@ -308,38 +310,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
     }
     ?>
 </div>
-
 <!-- update profile form -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProfileModalLabel">Hello In Your Profile</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
+<div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Hello In Your Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
 
-                    <form method="post" action="" class="form"><br>
-                        <label for="new_username">Username:</label>
-                        <input type="text" id="new_username" name="new_username" value="<?php echo $userData['Username']; ?>" required><br>
+                <form method="post" action="" class="form"><br>
+                    <label for="new_username">Username:</label>
+                    <input type="text" id="new_username" name="new_username" value="<?php echo $userData->getUsername(); ?>" required><br>
 
-                        <label for="new_email">Email:</label>
-                        <input type="email" id="new_email" name="new_email" value="<?php echo $userData['Email']; ?>" required><br>
+                    <label for="new_email">Email:</label>
+                    <input type="email" id="new_email" name="new_email" value="<?php echo $userData['Email']; ?>" required><br>
 
-                        <label for="new_email">About You:</label>
-                        <input type="text" id="new_aboutMe" name="new_aboutMe" value="<?php echo $userData['aboutMe']; ?>" required><br>
+                    <label for="new_email">About You:</label>
+                    <input type="text" id="new_aboutMe" name="new_aboutMe" value="<?php echo $userData['aboutMe']; ?>" required><br>
 
-                        <input type="submit" class="btn login" value="Save Changes">
-                    </form>
+                    <input type="submit" class="btn login" value="Save Changes">
+                </form>
 
-                </div>
             </div>
         </div>
     </div>
+</div>
 <!-- add wikis form -->
-    <div class="modal fade" id="prof" tabindex="-1" role="dialog" aria-labelledby="profLabel" aria-hidden="true">
+<div class="modal fade" id="prof" tabindex="-1" role="dialog" aria-labelledby="profLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="container">
@@ -356,20 +357,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
             <label for="content">Content:</label>
             <textarea id="content" name="content" required></textarea><br>
 
-            <label for="category">Category:</label>
-            <select id="category" name="category" required>
-                <?php foreach ($categories as $category) : ?>
-                    <option value="<?php echo $category['CategoryID']; ?>"><?php echo $category['CategoryName']; ?></option>
-                <?php endforeach; ?>
-            </select><br>
-
-            <label for="tags">Tags:</label>
-            <select id="tags" name="tags[]" multiple>
-                <?php foreach ($tags as $tag) : ?>
-                    <option value="<?php echo $tag['TagID']; ?>"><?php echo $tag['TagName']; ?></option>
-                <?php endforeach; ?>
-            </select><br>
-
+            
             <input type="submit" value="Add Wiki">
         </form>
     </div>
@@ -392,47 +380,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
                     <h5 class="modal-title" id="editProfileModalLabel">Hello in your Wikis</h5>
                     
                 </div>
-                    <?php
-                    if ($myWiki->rowCount() > 0) {
-                        foreach ($myWiki as $myWiki) {
-                    ?>
-                            <div class="ag-courses_item_p">
-                                <div class="ag-courses-item_link">
-                                    <div class="ag-courses-item_bg"></div>
-                                    <div class="ag-courses-item_title">
-                                        <?php
-                                        echo $myWiki["Title"] . "<br>";
-                                        echo '<p class="">' . substr($myWiki["Content"], 0, 40) . '...</p>';
-                                        echo '<p class="">' . $myWiki["CategoryName"] . '</p>';
-                                        ?>
-                                    </div>
-                                    <div class="ag-courses-item_date-box">
-                                        Create at:
-                                        <span class="ag-courses-item_date">
-                                            <?php echo $myWiki["CreatedAt"] . "<br>"; ?>
-                                        </span>
-                                    </div>
-                                    <div class="ag-courses-item_date-box">
-                                        <a href="updateWiki.php?wiki_id=<?php echo $myWiki['WikiID']; ?>" class="ag-courses-item_date">Edit Wiki</a>
-                                    </div>
-                                    <div class="ag-courses-item_date-box">
-                                        <button class="btn btn-danger" onclick="deleteWiki(<?php echo $myWiki['WikiID']; ?>)">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                    <?php
-                        }
-                    } else {
-                        echo "Aucun wiki trouvé pour cet utilisateur dans la base de données.";
-                    }
-                    ?>
+                  
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <script>
     function deleteWiki(wikiID) {
         if (confirm("Are you sure you want to delete this wiki?")) {
@@ -452,9 +405,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_wiki'])) {
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-/r/x+qnKQXRSwHVb/Q5U7AuQibJtVsdA5T1IK5ntvWtjLYSD+SIcAqpsY5XWfRQ" crossorigin="anonymous"></script>
-
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-/r/x+qnKQXRSwHVb/Q5U7AuQibJtVsdA5T1IK5ntvWtjLYSD+SIcAqpsY5XWfRQ" crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

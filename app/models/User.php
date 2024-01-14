@@ -1,19 +1,18 @@
 <?php
 session_start();
 
-
+require_once '../../../config/database.php';
 class User
 {
     private $db;
 
-    public function __construct($db)
-    {
-        $this->db = $db;
+    public function __construct(){
+        $this->db = Database::getInstance()->getConnection(); 
     }
 
     public function register($username, $email, $password, $aboutMe)
     {
-        try {
+       
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO users (Username, Email, Password, aboutMe) VALUES (:Username, :Email, :Password, :aboutMe)";
@@ -22,17 +21,14 @@ class User
             $stmt->bindParam(':Email', $email);
             $stmt->bindParam(':Password', $hashedPassword);
             $stmt->bindParam(':aboutMe', $aboutMe);
-
             $stmt->execute();
             exit();
-        } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
-        }
+      
     }
 
     public function login($email, $password)
     {
-        try {
+
             $sql = "SELECT * FROM users WHERE Email = :Email";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':Email', $email);
@@ -57,9 +53,6 @@ class User
             } else {
                 echo "Aucun utilisateur trouvé avec cette adresse e-mail.";
             }
-        } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
-        }
     }
 
     public function editProfile($newUsername, $newEmail, $newAboutMe, $userID){

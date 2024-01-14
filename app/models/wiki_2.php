@@ -20,7 +20,12 @@ class Wiki
     $wikisData = $stmt->fetchAll();
     $wikis = array();
     foreach ($wikisData as $wiki) {
-        $wikis[] = new wikiController($wiki["title"],$wiki["content"],$wiki["author"], $wiki["category"],$wiki["dateCreation"]);
+        $wikis[] = new wikiController(
+            $wiki["title"],
+            $wiki["content"],
+            $wiki["author"],
+             $wiki["category"],
+             $wiki["dateCreation"]);
     }
     return $wikis;
 }

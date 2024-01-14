@@ -1,17 +1,3 @@
-<?php
-require "../../../config/database.php";
-
-require "../../controllers/WikiController.php";
-require "../../models/Wiki.php";
-require "../../models/Category.php";
-
-$data = new Wiki();
-$database = new Database();
-$cat = new Category();
-$result = $data->wikis();
-$db = $database->connect();
-$category = $cat->category();
-?>
 
 <!DOCTYPE html>
 <html lang="en" >
@@ -127,7 +113,7 @@ $category = $cat->category();
                 </div>
             </nav>
             <div>
-                <a href="../auth/sign.php" class="login">Login</a>
+                <a href="../AuthController.php" class="login">Login</a>
             </div>
         </div>
     </nav>
@@ -141,18 +127,17 @@ $category = $cat->category();
     </div>
 </section>
 <svg preserveAspectRatio="none" version="1.1" width="100%" height="48" viewBox="0 0 1600 48" style="width:100%; float:left; margin-bottom: 40px;"><polygon class="polygon" points="1600,0 0,0 0,48  "></polygon></svg>
-
 <div class="ag-courses_box" style="width: 100%;">
     <?php
-    if ($category->rowCount()>0){
-        foreach ($category as $category){
+    if (isset($categories) && !empty($categories)) {
+        foreach ($categories as $row){
         ?>
               <div class="category ag-courses_item">
-                <a href="show_category_wikis.php?category_id=<?php echo $category['CategoryID']; ?>" class="ag-courses-item_link">
+                <a href="showcategoryWiki.php?category_id=<?php echo $row->getCategoryID(); ?>" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
                     <div class="ag-courses-item_title">
                         <?php
-                        echo $category["CategoryName"] . "<br>";
+                        echo $row->getCategoryName() . "<br>";
                         ?>
                     </div>
                 </a>
@@ -176,40 +161,37 @@ $category = $cat->category();
   </div>
 </div>
 <div class="ag-courses_box">
-    <?php
-    if ($result->rowCount() > 0) {
-        while ($row = $result->fetch()) {
-            ?>
+
+<?php
+if (isset($wikis) && !empty($wikis)) {
+    foreach ($wikis as $row) {
+        ?>
             <div class="ag-courses_item">
-
-            <a href="show.php?wiki_id=<?php echo $row['WikiID']; ?>" class="ag-courses-item_link">
+            <a href='showWikiD.php?wiki_id=<?=$row->getIdwiki(); ?>' class='ag-courses-item_link'>
                     <div class="ag-courses-item_bg"></div>
-
                     <div class="ag-courses-item_title">
                         <?php
-                        echo "Titre : " . $row["Title"] . "<br>";
-                        echo "Auteur : " . $row["AuthorName"] . "<br>";
-                        echo "Catégorie : " . $row["CategoryName"] . "<br>";
+                        echo $row->getTitle() . "<br>";
+                        echo '<p class="">' . substr($row->getcontent(), 0, 40) . '...</p>' . '<br>';
+                        echo "By " . $row->getauthor() . "<br>";
+                        echo '<p class="">' . $row->getcategory() . '</p>' . "<br>";
                         ?>
                     </div>
-
                     <div class="ag-courses-item_date-box">
                         Create at:
                         <span class="ag-courses-item_date">
-                        <?php
-                        echo $row["CreatedAt"] . "<br>";
-                        ?>
-                    </span>
+                            <?php echo $row->getdateCreation() . "<br>"; ?>
+                        </span>
                     </div>
                 </a>
-
             </div>
-            <?php
+    <?php
         }
     } else {
-        echo "Aucun wiki trouvé dans la base de données.";
+        echo "Aucun wiki trouvé pour cet utilisateur dans la base de données.";
     }
     ?>
+
 </div>
 
 </body>

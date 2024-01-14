@@ -1,17 +1,3 @@
-<?php
-require "../../models/User.php";
-require "../../../config/database.php";
-$user = new User(Database::connect());
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
-    $user->register($_POST['Username'], $_POST['Email'], $_POST['Password'], $_POST['aboutMe']);
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
-    $user->login($_POST['loginEmail'], $_POST['loginPassword']);
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,15 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     <div class="form-container sign-up-container">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <h1>Create Account</h1>
-
             <input type="text" name="Username" placeholder="Username" required>
-
             <input type="Email" name="Email" placeholder="Email" required>
-
             <input type="password" name="Password" placeholder="Mot de passe" required>
-
             <input type="text" name="aboutMe" placeholder="tell us about you" required>
-
             <button type="submit" name="register">S'inscrire</button>
         </form>
     </div>
@@ -47,9 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
             </div>
             <span>or use your account</span>
             <input type="email" name="loginEmail" placeholder="Email" required>
-
             <input type="password" name="loginPassword" placeholder="Mot de passe" required>
-
             <button type="submit" name="login">Se Connecter</button>
         </form>
     </div>
