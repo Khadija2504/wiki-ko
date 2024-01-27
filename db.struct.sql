@@ -47,7 +47,7 @@ CREATE TABLE `tags` (
 
 -- Wikis table to store information about wikis
 CREATE TABLE `wikis` (
-  `WikiID` INT AUTO_INCREMENT PRIMARY KEY,
+  `Wik  iID` INT AUTO_INCREMENT PRIMARY KEY,
   `Title` VARCHAR(255) NOT NULL,
   `Content` TEXT NOT NULL,
   `AuthorID` INT,

@@ -1,4 +1,4 @@
 <?php
 
-
-include_once 'app\controllers\WikiController.php';
+require_once 'config.php';
+require_once 'router.php';

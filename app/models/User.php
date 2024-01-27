@@ -1,80 +1,140 @@
-<?php
-session_start();
+<?php 
+include_once __DIR__.'../../../config/database.php';
+class user{
+    private $UserID;
 
-require_once '../../../config/database.php';
-class User
-{
-    private $db;
+    private $Username;
+
+    private $Email;
+
+    private $Password;
+
+    private  $aboutMe;
+
+    private $Role;
 
     public function __construct(){
-        $this->db = Database::getInstance()->getConnection(); 
+    
     }
+    
 
-    public function register($username, $email, $password, $aboutMe)
+    /**
+     * Get the value of UserID
+     */ 
+    public function getUserID()
     {
-       
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-            $sql = "INSERT INTO users (Username, Email, Password, aboutMe) VALUES (:Username, :Email, :Password, :aboutMe)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':Username', $username);
-            $stmt->bindParam(':Email', $email);
-            $stmt->bindParam(':Password', $hashedPassword);
-            $stmt->bindParam(':aboutMe', $aboutMe);
-            $stmt->execute();
-            exit();
-      
+        return $this->UserID;
     }
 
-    public function login($email, $password)
+    /**
+     * Set the value of UserID
+     *
+     * @return  self
+     */ 
+    public function setUserID($UserID)
     {
+        $this->UserID = $UserID;
 
-            $sql = "SELECT * FROM users WHERE Email = :Email";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':Email', $email);
-            $stmt->execute();
-
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($result) {
-                if (password_verify($password, $result['Password'])) {
-                    $_SESSION['data'] = $result;
-
-                    if ($_SESSION['data']['Role'] == 'admin') {
-                        header('Location: ../../views/wiki/dashboard.php');
-                        exit();
-                    } else {
-                        header('Location: ../../views/wiki/home.php');
-                        exit();
-                    }
-                } else {
-                    echo "Nom d'utilisateur ou mot de passe incorrect.";
-                }
-            } else {
-                echo "Aucun utilisateur trouvé avec cette adresse e-mail.";
-            }
+        return $this;
     }
 
-    public function editProfile($newUsername, $newEmail, $newAboutMe, $userID){
-        $sql = "UPDATE users SET Username = :newUsername, Email = :newEmail, aboutMe = :newAboutMe WHERE UserID = :userID";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':newUsername', $newUsername);
-        $stmt->bindParam(':newEmail', $newEmail);
-        $stmt->bindParam(':newAboutMe', $newAboutMe);
-        $stmt->bindParam(':userID', $userID);
-        $stmt->execute();
-
-        $_SESSION['data']['Username'] = $newUsername;
-        $_SESSION['data']['Email'] = $newEmail;
-        $_SESSION['data']['aboutMe'] = $newAboutMe;
-
+    /**
+     * Get the value of Username
+     */ 
+    public function getUsername()
+    {
+        return $this->Username;
     }
-    public function logout(){
-        if (isset($_POST['logout'])) {
-            session_destroy();
-            header('Location: ../auth/sign.php');
-            exit();
-        }
+
+    /**
+     * Set the value of Username
+     *
+     * @return  self
+     */ 
+    public function setUsername($Username)
+    {
+        $this->Username = $Username;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Email
+     */ 
+    public function getEmail()
+    {
+        return $this->Email;
+    }
+
+    /**
+     * Set the value of Email
+     *
+     * @return  self
+     */ 
+    public function setEmail($Email)
+    {
+        $this->Email = $Email;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Password
+     */ 
+    public function getPassword()
+    {
+        return $this->Password;
+    }
+
+    /**
+     * Set the value of Password
+     *
+     * @return  self
+     */ 
+    public function setPassword($Password)
+    {
+        $this->Password = $Password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of aboutMe
+     */ 
+    public function getAboutMe()
+    {
+        return $this->aboutMe;
+    }
+
+    /**
+     * Set the value of aboutMe
+     *
+     * @return  self
+     */ 
+    public function setAboutMe($aboutMe)
+    {
+        $this->aboutMe = $aboutMe;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Role
+     */ 
+    public function getRole()
+    {
+        return $this->Role;
+    }
+
+    /**
+     * Set the value of Role
+     *
+     * @return  self
+     */ 
+    public function setRole($Role)
+    {
+        $this->Role = $Role;
+
+        return $this;
     }
 }
-?>

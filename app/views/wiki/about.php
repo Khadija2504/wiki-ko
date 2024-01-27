@@ -1,26 +1,16 @@
-<?php
-require '../../../config/database.php';
-require '../../controllers/WikiController.php';
-require '../../models/Wiki.php';
-session_start();
-
-$data = new wikiController();
-$result = $data->search();
-
-?>
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
 
-<head>
-<meta charset="UTF-8">
-<title>WIKI-KO</title>
-<link rel='stylesheet' href='https://rawcdn.githack.com/SochavaAG/example-mycode/master/_common/css/reset.css'>
-<link rel="stylesheet" href="../../../public/css/cards.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Bootstrap CSS -->
+    <head>
+    <meta charset="UTF-8">
+    <title>WIKI-KO</title>
+    <link rel='stylesheet' href='https://rawcdn.githack.com/SochavaAG/example-mycode/master/_common/css/reset.css'>
+    <link rel="stylesheet" href="../../../public/css/cards.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
 <!-- Bootstrap JS with Popper.js and jQuery -->
@@ -82,7 +72,7 @@ $result = $data->search();
         }
         .headturbo{
           background-color: #000;
-          min-height: 600px;
+          min-height: 250px;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -117,12 +107,14 @@ if (isset($_SESSION['data'])){
     <nav class="navbar navbar-expand-lg navbar-scroll  shadow-0 border-bottom ">
         <div class="container">
 
+        <form class="search" method="post" action="search.php" id="form">
             <div class="input-group w-50 ms-md-4 ">
-                <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
+                <input type="search" name="word" id="form1" class="form-control rounded" placeholder="Search"
                        aria-label="Search" aria-describedby="search-addon"/>
-                <button type="button" class="btn btn-outline" data-mdb-ripple-init><i
+                <button name="search" type="button" class="btn btn-outline" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
             </div>
+        </form>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -160,13 +152,12 @@ if (isset($_SESSION['data'])){
 <section class="headturbo">
   <div class="texture-overlay"></div>
     <div class="premiumBox">
-      <h1><b>Welcome in WIKI-KO!</b></h1>
-      <h3>the best place where you can <br>looking for your favore articals easly..</h3>
+      <h1><b>about wiki-ko</b></h1>
     </div>
 </section>
 <svg preserveAspectRatio="none" version="1.1" width="100%" height="48" viewBox="0 0 1600 48" style="width:100%; float:left; margin-bottom: 40px;"><polygon class="polygon" points="1600,0 0,0 0,48  "></polygon></svg>
 
-<header style="background: linear-gradient(to right, #FF4B2B, #FF416C); height: 130px;">
+<header style="background: linear-gradient(to right, #FF4B2B, #FF416C); height: 90px;">
 
 </header>
 
@@ -216,11 +207,19 @@ if (isset($_SESSION['data'])){
         <div class="container">
 
             <div class="logo">WIKI-KO</div>
-            <div class="input-group w-50 ms-md-4 ">
-                <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
-                       aria-label="Search" aria-describedby="search-addon"/>
-                <button type="button" class="btn btn-outline" data-mdb-ripple-init><i
+            <div>
+                <div class="input-group w-50 ms-md-4 ">
+                    <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
+                        aria-label="Search" aria-describedby="search-addon" />
+                    <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class=" text-light bi bi-list"></i>
+                </button>
+                <div id="result" class="search-bar w-60"></div>
             </div>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -249,36 +248,45 @@ if (isset($_SESSION['data'])){
         </div>
     </nav>
 </header>
+<section class="headturbo">
+  <div class="texture-overlay"></div>
+    <div class="premiumBox">
+      <h1><b>about wiki-ko</b></h1>
+    </div>
+</section>
+<svg preserveAspectRatio="none" version="1.1" width="100%" height="48" viewBox="0 0 1600 48" style="width:100%; float:left; margin-bottom: 40px;"><polygon class="polygon" points="1600,0 0,0 0,48  "></polygon></svg>
+
+<header style="background: linear-gradient(to right, #FF4B2B, #FF416C); height: 130px;">
+
+</header>
 <?php
 }
 ?>
-<section class="vh-20">
-<div class="container py-5 h-100">
-<div class="row d-flex align-items-center justify-content-center h-100">
-<div class="list" >
+    <div> is a form of online hypertext publication that is collaboratively edited and managed by its own audience directly through a web browser. A typical wiki contains multiple pages for the subjects or scope of the project, and could be either open to the public or limited to use within an organization for maintaining its internal knowledge base.<br>
+    Wikis are enabled by wiki software, otherwise known as wiki engines. A wiki engine, being a form of a content management system, differs from other web-based systems such as blog software or static site generators, in that the content is created without any defined owner or leader, and wikis have little inherent structure, allowing structure to emerge according to the needs of the users. Wiki engines usually allow content to be written using a simplified markup language and sometimes edited with the help of a rich-text editor. There are dozens of different wiki engines in use, both standalone and part of other software, such as bug tracking systems. Some wiki engines are free and open-source, whereas others are proprietary. Some permit control over different functions (levels of access); for example, editing rights may permit changing, adding, or removing material. Others may permit access without enforcing access control. Further rules may be imposed to organize content.<br>
+    There are hundreds of thousands of wikis in use, both public and private, including wikis functioning as knowledge management resources, note-taking tools, community websites, and intranets. Ward Cunningham, the developer of the first wiki software, WikiWikiWeb, originally described wiki as "the simplest online database that could possibly work". "Wiki-ko" is a Hawaiian word meaning.<br>
+    The online encyclopedia project Wikipedia is the most popular wiki-based website, and is one of the most widely viewed sites in the world, having been ranked in the top twenty since 2007. Wikipedia is not a single wiki but rather a collection of hundreds of wikis, with each one pertaining to a specific language. The English-language Wikipedia has the largest collection of articles: as of January 2024, it has over six million articles.</div>
 
-		<h3 class="list-title"> les resultat(<?php echo count($result) ?>) </h3>
-		<div class="scroll">
-        <?php
-
-            foreach( $result as $r){
-        ?>
-            <input type="hidden" name="WikiID" value="<?php echo $r['WikiID'] ?>">
-
-                <ul class="list-items">
-                    
-                    <li><?php echo $r['Title'] ?><span><span> : </span><?php echo $r['Content'] ?></span></li>
-
-                </ul>
-                <?php
-            }
-            ?>
-</section>
-
-<style>
-		#form{
-		display:flex;
-	}
-</style>
+    <!-- footer -->
+    <div class="row" style="--bs-gutter-x: 0.5rem;">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="card" style="background-color: #000000; padding-bottom: 50px; color: #ff7189;">
+      <div class="card-body">
+        <h5 class="card-title">About Wiki-ko!</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary" style="background-color: #ff4848; color: #fbf5f5;">Read more</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+  <div class="card" style="background-color: #000000; padding-bottom: 50px; color: #ff7189;">
+      <div class="card-body">
+        <h5 class="card-title">More categories..</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary" style="background-color: #ff4848; color: #fbf5f5;">Read more</a>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

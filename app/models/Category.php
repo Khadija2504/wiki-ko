@@ -1,23 +1,52 @@
 <?php
-require_once '../../../config/database.php';
-
-class Category{
-    private $db;
+include_once __DIR__.'../../../config/database.php';
+class category{
+    private $CategoryID;
+    private $CategoryName;
+    
     public function __construct(){
-        $this->db = Database::getInstance()->getConnection(); 
+      
     }
     
-    public function category(){
-        $sql = "SELECT * FROM categories LIMIT 6";
-        $result = $this->db->query($sql);
-        return $result;
+
+    /**
+     * Get the value of CategoryID
+     */ 
+    public function getCategoryID()
+    {
+        return $this->CategoryID;
     }
 
-    public function getCategoryName($categoryID) {
-        $query = $this->db->prepare("SELECT CategoryName FROM categories WHERE CategoryID = ?");
-        $query->execute([$categoryID]);
-        $result = $query->fetch(PDO::FETCH_ASSOC);
+    /**
+     * Set the value of CategoryID
+     *
+  
+     */ 
+    public function setCategoryID($CategoryID)
+    {
+        $this->CategoryID = $CategoryID;
 
-        return ($result) ? $result['CategoryName'] : null;
+        return $this;
+    }
+
+    /**
+     * Get the value of CategoryName
+     */ 
+    public function getCategoryName()
+    {
+        return $this->CategoryName;
+    }
+
+    /**
+     * Set the value of CategoryName
+     *
+ 
+     */ 
+    public function setCategoryName($CategoryName)
+    {
+        $this->CategoryName = $CategoryName;
+
+        return $this;
     }
 }
+?>

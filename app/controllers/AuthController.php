@@ -1,68 +1,79 @@
 <?php
-include_once '../../models/userModel/classDAO.php';
+session_start();
+require_once(__DIR__.'/../models/Dao/AuhtorDAO.php');
+
 class AuthController {
-    private $database;
+    private $auth;
 
     public function __construct() {
-        $this->database = Database::getInstance()->getConnection(); 
+        $this->auth = new AuhtorDAO();
     }
-    public function getRegister($username, $email, $password, $aboutMe){
-        $data = new ClassDAO();
-        $register = $data->register($username, $email, $password, $aboutMe,);
-        return $register;
-    }
-    public function getLogin($email, $password){
-        $data = new ClassDAO();
-        $login = $data->login($email, $password);
-        if ($login) {
-              
-            if (password_verify($password, $login['Password'])) {
-              
-               
-       
-                if ($login['Role'] == 'admin') {
-                    $_SESSION['data'] = $login;
-                    header('Location: ../views/wiki/dashboard.php');
-                    exit();
-                } else {
-                    $_SESSION['data'] = $login;
-                
-                      
-                    header('Location: ../pagesController/homeControl.php');
-                    exit();
-                }
-            } else {
-                echo "Nom d'utilisateur ou mot de passe incorrect.";
+
+    public function processRegister() {
+        if(isset($_POST['register'])) {
+            $username = $_POST['Username'];
+            $email = $_POST['Email'];
+            $password = $_POST['Password'];
+            $aboutMe = $_POST['aboutMe'];
+
+            if (empty($username) || empty($email) || empty($password) || empty($aboutMe)) {
+                echo "All fields are required.";
+                return false;
             }
-        } else {
-            echo "Aucun utilisateur trouvé avec cette adresse e-mail.";
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo "Invalid email format.";
+                return false;
+            }
+
+            $res = $this->auth->register($username, $email, $password, $aboutMe);
+
+            if(!$res) {
+                echo "Error during registration.";
+            }
+
+            return $res;
         }
     }
-    public function logout(){
-        $data = new ClassDAO();
-        $logout = $data->logout();
-        return $logout;
-    }
-    public function editProfile($newUsername, $newEmail, $newAboutMe, $userID){
-        $data = new ClassDAO();
-        $editProfile = $data->editProfile($newUsername, $newEmail, $newAboutMe, $userID);
-        return $editProfile;
-    }
-    public function Form(){
-        include_once '../../views/auth/sign.php';
+
+    public function processLogin() {
+        if(isset($_POST['login'])) {
+            $loginEmail = $_POST['loginEmail'];
+            $loginPassword = $_POST['loginPassword'];
+
+            if (empty($loginEmail) || empty($loginPassword)) {
+                echo "Email and password are required.";
+                return false;
+            }
+
+            if (!filter_var($loginEmail, FILTER_VALIDATE_EMAIL)) {
+                echo "Invalid email format.";
+                return false;
+            }
+
+            $result = $this->auth->login($loginEmail, $loginPassword);
+
+            if($result) {
+                $_SESSION['userID'] = $result['UserID'];
+                $_SESSION['Username'] = $result['Username'];
+                $_SESSION['Email'] = $result['Email'];
+                $_SESSION['aboutMe'] = $result['aboutMe'];
+
+                if ($result['Role'] == 'admin') {
+                    header('Location: AdminDashboardController.php');
+                    exit();
+                } else {
+                    header('Location: homeController.php');
+                    exit();
+                }
+            }
+        }
     }
 }
 
-// $data = new AuthController();
+$data = new AuthController();
+$data->processRegister();
+$data->processLogin();
 
-// if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
-//     $data->getRegister($_POST['Username'], $_POST['Email'], $_POST['Password'], $_POST['aboutMe']);
-// }
-
-// if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
-//     $data->getLogin($_POST['loginEmail'], $_POST['loginPassword']);
-// }
-// $data->logout();
-// $data->Form();
+include_once '../views/auth/sign.php';
 ?>
-

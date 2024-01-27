@@ -1,20 +1,19 @@
 <?php
-include_once '../../../config/database.php';
+include_once __DIR__.'../../../config/database.php';
+include_once __DIR__.'./Category.php';
+include_once __DIR__.'./User.php';
 class wiki{
     private $WikiID;
     private $title;
     private $content;
-    private $author;
-    private   $category;
+    private User $author;
+    private category  $category;
     private $dateCreation;
 
-    public function __construct($WikiID,$title,$content,$author,$category,$dateCreation){
-        $this->WikiID = $WikiID;
-        $this->title = $title;
-        $this->content = $content;
-        $this->author = $author;
-        $this->category = $category;
-        $this->dateCreation = $dateCreation;
+    public function __construct(){
+      $this->author = new User();
+      $this->category = new category();
+        
     }
     
 
@@ -66,37 +65,9 @@ class wiki{
         return $this->author;
     }
 
-    /**
-     * Set the value of author
-     *
-     * @return  self
-     */ 
-    public function setAuthor($author)
-    {
-        $this->author = $author;
+    
 
-        return $this;
-    }
-
-    /**
-     * Get the value of category
-     */ 
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * Set the value of category
-     *
-     * @return  self
-     */ 
-    public function setCategory($category)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
+  
 
     /**
      * Get the value of dateCreation
@@ -137,4 +108,13 @@ class wiki{
 
         return $this;
     }
+
+    /**
+     * Get the value of category
+     */ 
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
 }

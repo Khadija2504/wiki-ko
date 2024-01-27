@@ -73,7 +73,7 @@
         }
         .headturbo{
           background-color: #000;
-          min-height: 600px;
+          min-height: 250px;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -108,14 +108,20 @@ if (isset($_SESSION['data'])){
     <nav class="navbar navbar-expand-lg navbar-scroll  shadow-0 border-bottom ">
         <div class="container">
 
-        <form class="search" method="post" action="search.php" id="form">
-            <div class="input-group w-50 ms-md-4 ">
-                <input type="search" name="word" id="form1" class="form-control rounded" placeholder="Search"
-                       aria-label="Search" aria-describedby="search-addon"/>
-                <button name="search" type="button" class="btn btn-outline" data-mdb-ripple-init><i
+        <div>
+                <div class="input-group w-50 ms-md-4 ">
+                    <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
+                        aria-label="Search" aria-describedby="search-addon" />
+                    <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class=" text-light bi bi-list"></i>
+                </button>
+                <div id="result" class="search-bar w-60"></div>
             </div>
-        </form>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -153,13 +159,16 @@ if (isset($_SESSION['data'])){
 <section class="headturbo">
   <div class="texture-overlay"></div>
     <div class="premiumBox">
-      <h1><b><?php echo $wikiDetails['Title']; ?></b></h1>
-      <h3><?php echo $wikiDetails['CategoryName']; ?></h3>
+    <?php foreach ($wikiDetails['detailsWiki'] as $wikiDetail): ?>
+    <h1><b><?php echo $wikiDetail->getTitle(); ?></b></h1>
+    <h3><?php echo $wikiDetail->getCategory()->getCategoryName(); ?></h3>
+<?php endforeach; ?>
+
     </div>
 </section>
 <svg preserveAspectRatio="none" version="1.1" width="100%" height="48" viewBox="0 0 1600 48" style="width:100%; float:left; margin-bottom: 40px;"><polygon class="polygon" points="1600,0 0,0 0,48  "></polygon></svg>
 
-<header style="background: linear-gradient(to right, #FF4B2B, #FF416C); height: 130px;">
+<header style="background: linear-gradient(to right, #FF4B2B, #FF416C); height: 90px;">
 
 </header>
 
@@ -209,14 +218,20 @@ if (isset($_SESSION['data'])){
         <div class="container">
 
             <div class="logo">WIKI-KO</div>
-            <form class="search" method="post" action="search.php" id="form">
-            <div class="input-group w-50 ms-md-4 ">
-                <input type="search" name="word" id="form1" class="form-control rounded" placeholder="Search"
-                       aria-label="Search" aria-describedby="search-addon"/>
-                <button name="search" type="button" class="btn btn-outline" data-mdb-ripple-init><i
+            <div>
+                <div class="input-group w-50 ms-md-4 ">
+                    <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
+                        aria-label="Search" aria-describedby="search-addon" />
+                    <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class=" text-light bi bi-list"></i>
+                </button>
+                <div id="result" class="search-bar w-60"></div>
             </div>
-            </form>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -239,7 +254,7 @@ if (isset($_SESSION['data'])){
                 </div>
             </nav>
             <div>
-            <a href="../AuthController.php" class="login">Login</a>
+            <a href="AuthController.php" class="login">Login</a>
             </div>
         </div>
     </nav>
@@ -247,8 +262,10 @@ if (isset($_SESSION['data'])){
 <section class="headturbo">
   <div class="texture-overlay"></div>
     <div class="premiumBox">
-      <h1><b><?php echo $wikiDetails['Title']; ?></b></h1>
-      <h3><?php echo $wikiDetails['CategoryName']; ?></h3>
+      <h1><b><?php foreach($wikiDetails['detailsWiki'] as $detail){
+       echo $detail->getTitle(); ?></b></h1>
+      <h3><?php echo $detail->getCategory()->getCategoryName(); ?></h3>
+      <?php } ?>
     </div>
 </section>
 <svg preserveAspectRatio="none" version="1.1" width="100%" height="48" viewBox="0 0 1600 48" style="width:100%; float:left; margin-bottom: 40px;"><polygon class="polygon" points="1600,0 0,0 0,48  "></polygon></svg>
@@ -262,13 +279,70 @@ if (isset($_SESSION['data'])){
 
     <section class="container">
         <div class="right">
-            <p><?php echo $wikiDetails['Content']; ?></p>
+            <p><?php foreach($wikiDetails['detailsWiki'] as $detail){
+             echo $detail->getContent(); ?></p>
         </div>
         <div class="left">
-            <p>Author: <?php echo $wikiDetails['AuthorName']; ?></p>
-            <p>Category: <?php echo $wikiDetails['CategoryName']; ?></p>
-            <p>Created at: <?php echo $wikiDetails['CreatedAt']; ?></p>
+            <p>Author: <?php echo $detail->getAuthor()->getUsername(); ?></p>
+            <p>Category: <?php echo $detail->getCategory()->getCategoryName(); ?></p>
+            <p>Created at: <?php echo $detail->getDateCreation(); ?></p>
         </div>
+        <?php } ?>
     </section>
+
+    <!-- footer -->
+    <div class="row" style="--bs-gutter-x: 0.5rem;">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="card" style="background-color: #000000; padding-bottom: 50px; color: #ff7189;">
+      <div class="card-body">
+        <h5 class="card-title">About Wiki-ko!</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary" style="background-color: #ff4848; color: #fbf5f5;">Read more</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+  <div class="card" style="background-color: #000000; padding-bottom: 50px; color: #ff7189;">
+      <div class="card-body">
+        <h5 class="card-title">More categories..</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary" style="background-color: #ff4848; color: #fbf5f5;">Read more</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myInput').on('keyup', function() {
+                let inputValue = this.value;
+                let outputDiv = "#result";
+                if (inputValue != "") {
+                    $.ajax({
+                        url: "",
+                        data: {
+                            'input': inputValue
+                        },
+                        dataType: "html",
+                        type: "POST",
+                        success: function(response) {
+                            $(outputDiv).empty().html(response);
+                        }
+                    });
+                } else {
+                    let msg = "";
+                    $('.errMsg').text(msg);
+                    $(outputDiv).empty();
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>

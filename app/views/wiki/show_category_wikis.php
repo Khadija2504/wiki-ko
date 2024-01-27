@@ -1,3 +1,24 @@
+<?php
+// require "../../../config/database.php";
+// require "../../models/User.php";
+// require "../../models/Wiki.php";
+// require "../../models/Category.php";
+
+// $user = new User(Database::connect());
+
+// $data = new Wiki();
+// $cat = new Category();
+// $database = new Database();
+// $user->logout();
+
+// if (isset($_GET['category_id'])) {
+//     $categoryID = (int)$_GET['category_id'];
+
+//     $categoryName = $cat->getCategoryName($categoryID);
+
+//     $catego = $data->getWikisByCategory($categoryID);
+    ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +26,7 @@
 <meta charset="UTF-8">
 <title>WIKI-KO</title>
 <link rel='stylesheet' href='https://rawcdn.githack.com/SochavaAG/example-mycode/master/_common/css/reset.css'>
-<link rel="stylesheet" href="../../../public/css/cards.css">
+<link rel="stylesheet" href="../../public/css/cards.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
@@ -208,14 +229,20 @@ if (isset($_SESSION['data'])){
         <div class="container">
 
             <div class="logo">WIKI-KO</div>
-            <form class="search" method="post" action="search.php" id="form">
-            <div class="input-group w-50 ms-md-4 ">
-                <input type="search" name="word" id="form1" class="form-control rounded" placeholder="Search"
-                       aria-label="Search" aria-describedby="search-addon"/>
-                <button name="search" type="button" class="btn btn-outline" data-mdb-ripple-init><i
+            <div>
+                <div class="input-group w-50 ms-md-4 ">
+                    <input type="search" id="myInput" class="form-control rounded" placeholder="Search"
+                        aria-label="Search" aria-describedby="search-addon" />
+                    <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init><i
                             class="bi bi-search"></i></button>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class=" text-light bi bi-list"></i>
+                </button>
+                <div id="result" class="search-bar w-60"></div>
             </div>
-            </form>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -238,7 +265,7 @@ if (isset($_SESSION['data'])){
                 </div>
             </nav>
             <div>
-            <a href="../AuthController.php" class="login">Login</a>
+                <a href="../auth/sign.php" class="login">Login</a>
             </div>
         </div>
     </nav>
@@ -248,39 +275,89 @@ if (isset($_SESSION['data'])){
 ?>
 
 <body>
-    <h1>Wikis in <?php echo $categoryName; ?></h1>
+    <h1>Wikis in <?php foreach ($categoryNames['categoryName'] as $row){
+        echo $row->getCategoryName();
+    } ?></h1>
     <div class="ag-courses_box">
 <?php
-if ($catego->rowCount() > 0) {
-    foreach ($catego as $wiki) {
-?>
+    foreach ($wikis['wikiCat'] as $row) {
+    ?>
         <div class="ag-courses_item">
-            <a href='showWikiD.php?wiki_id=<?=$row->getIdwiki(); ?>' class='ag-courses-item_link'>
-                <div class="ag-courses-item_bg"></div>
-                <div class="ag-courses-item_title">
-                    <?php
-                    echo $row->getTitle() . "<br>";
-                    echo '<p class="">' . substr($row->getcontent(), 0, 40) . '...</p>' . '<br>';
-                    echo "By " . $row->getauthor() . "<br>";
-                    echo '<p class="">' . $row->getcategory() . '</p>' . "<br>";
-                    ?>
-                </div>
-                <div class="ag-courses-item_date-box">
-                    Create at:
-                    <span class="ag-courses-item_date">
-                        <?php echo $row->getdateCreation() . "<br>"; ?>
-                    </span>
-                </div>
-            </a>
-        </div>
-<?php
-    }
-} else {
-    echo '<p>No wikis found for this category.</p>';
-}
-?>
+                <a href="showWikiController.php?wiki_id=<?php echo $row->getIdwiki(); ?>" class="ag-courses-item_link">
+                    <div class="ag-courses-item_bg"></div>
+                    <div class="ag-courses-item_title">
+                        <?php
+                        echo $row->getTitle() . "<br>";
+                        echo '<p class="">' . substr($row->getContent(), 0, 40) . '...</p>' . '<br>';
+                        echo "By " . $row->getAuthor()->getUsername() . "<br>";
+                        ?>
+                    </div>
+                    <div class="ag-courses-item_date-box">
+                        Create at:
+                        <span class="ag-courses-item_date">
+                            <?php echo $row->getDateCreation() . "<br>"; ?>
+                        </span>
+                    </div>
+                </a>
+            </div>
+    <?php
+        }
+    ?>
 </div>
-</body>
+<!-- footer -->
+<div class="row" style="--bs-gutter-x: 0.5rem;">
+  <div class="col-sm-6 mb-3 mb-sm-0">
+    <div class="card" style="background-color: #000000; padding-bottom: 50px; color: #ff7189;">
+      <div class="card-body">
+        <h5 class="card-title">About Wiki-ko!</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary" style="background-color: #ff4848; color: #fbf5f5;">Read more</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+  <div class="card" style="background-color: #000000; padding-bottom: 50px; color: #ff7189;">
+      <div class="card-body">
+        <h5 class="card-title">More categories..</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary" style="background-color: #ff4848; color: #fbf5f5;">Read more</a>
+      </div>
+    </div>
+  </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myInput').on('keyup', function() {
+                let inputValue = this.value;
+                let outputDiv = "#result";
+                if (inputValue != "") {
+                    $.ajax({
+                        url: "",
+                        data: {
+                            'input': inputValue
+                        },
+                        dataType: "html",
+                        type: "POST",
+                        success: function(response) {
+                            $(outputDiv).empty().html(response);
+                        }
+                    });
+                } else {
+                    let msg = "";
+                    $('.errMsg').text(msg);
+                    $(outputDiv).empty();
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>
 
