@@ -8,11 +8,6 @@ The **Wiki Content Management System** is a dynamic and collaborative platform d
 ## **Table of Contents**
 1. [Features](#features)
 2. [Technologies Used](#technologies-used)
-3. [Project Structure](#project-structure)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [Bonus Features](#bonus-features)
-
 ---
 
 ## **Features**
